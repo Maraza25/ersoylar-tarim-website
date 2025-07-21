@@ -85,6 +85,7 @@ export default function LandingPage() {
     "/gallery/8.jpeg",
     "/gallery/9.jpeg",
     "/gallery/10.jpeg",
+    "/gallery/11.jpeg",
 
   ]
 
