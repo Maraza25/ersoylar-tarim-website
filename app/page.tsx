@@ -4,12 +4,14 @@ import { useState, useEffect } from "react"
 import { Phone, MapPin, Menu, X, Wheat, Truck, Globe } from "lucide-react"
 import { Image } from 'antd'
 import { FaWhatsapp, FaFacebook } from 'react-icons/fa'
+import { useSearchParams } from 'next/navigation'
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("anasayfa")
   const [visiblePhotos, setVisiblePhotos] = useState(6)
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null)
+  const searchParams = useSearchParams()
 
   const products = [
     {
@@ -118,10 +120,26 @@ export default function LandingPage() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  useEffect(() => {
+    const section = searchParams.get('section')
+    if (section) {
+      const element = document.getElementById(section)
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" })
+          setActiveSection(section)
+        }, 100)
+      }
+    }
+  }, [searchParams])
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
+      setActiveSection(sectionId)
+      // URL'i güncelle ama sayfayı yeniden yükleme
+      window.history.pushState({}, '', `/${sectionId === 'anasayfa' ? '' : sectionId}`)
     }
     setIsMenuOpen(false)
   }
@@ -133,7 +151,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Image src="/logo.jpeg" alt="Ersoylar Tarım ve Nakliyat" width={64} height={64} />
+              <img src="/logo.jpeg" alt="Ersoylar Tarım ve Nakliyat" width={64} height={64} />
               <h1 className="text-xl font-bold text-gray-800">Ersoylar Tarım ve Nakliyat</h1>
             </div>
 
