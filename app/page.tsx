@@ -1,12 +1,12 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { Phone, MapPin, Menu, X, Wheat, Truck, Globe } from "lucide-react"
 import { Image } from 'antd'
 import { FaWhatsapp, FaFacebook } from 'react-icons/fa'
 import { useSearchParams } from 'next/navigation'
 
-export default function LandingPage() {
+function MainContent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("anasayfa")
   const [visiblePhotos, setVisiblePhotos] = useState(6)
@@ -566,5 +566,13 @@ export default function LandingPage() {
         <FaWhatsapp className="h-5 w-5 sm:h-6 sm:w-6" />
       </a>
     </div>
+  )
+}
+
+export default function LandingPage() {
+  return (
+    <Suspense fallback={<div>Yükleniyor...</div>}>
+      <MainContent />
+    </Suspense>
   )
 }
